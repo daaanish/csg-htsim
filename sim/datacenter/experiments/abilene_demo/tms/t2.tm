@@ -1,0 +1,4 @@
+Nodes 12
+Connections 1
+
+1->10 start 0 size 15000000 paths 2 paths_idx 0,1 split 0.5,0.5

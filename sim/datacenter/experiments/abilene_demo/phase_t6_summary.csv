@@ -1,0 +1,3 @@
+phase,src,dst,flow_id,paths,weights,bytes_sent,bytes_received,bytes_dropped_est,throughput_mbps,active_duration_s,active_throughput_mbps,flow_start_s,flow_finish_s
+t6,1,10,1,0,1.0,15000000,721852,14278148,3.850,0.122000,47.335,0.002000,0.124000
+t6,1,10,2,0,1.0,15000000,820936,14179064,4.380,0.122000,53.832,0.002000,0.124000

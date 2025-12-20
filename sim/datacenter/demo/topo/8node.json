@@ -1,0 +1,16 @@
+{
+  "hosts": ["h0","h1","h2","h3","r1","r2","r3","r4"],
+  "links": [
+    {"src":"h0","dst":"r1","speed_mbps":100,"latency_us":1},
+    {"src":"r1","dst":"h1","speed_mbps":100,"latency_us":1},
+    {"src":"h0","dst":"r2","speed_mbps":100,"latency_us":1},
+    {"src":"r2","dst":"r4","speed_mbps":100,"latency_us":1},
+    {"src":"r4","dst":"h1","speed_mbps":100,"latency_us":1},
+    {"src":"h2","dst":"r2","speed_mbps":100,"latency_us":1},
+    {"src":"r4","dst":"h3","speed_mbps":100,"latency_us":1},
+    {"src":"h2","dst":"r3","speed_mbps":100,"latency_us":1},
+    {"src":"r3","dst":"h3","speed_mbps":100,"latency_us":1}
+  ]
+}
+
+

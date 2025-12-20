@@ -1,0 +1,20 @@
+# Experiment output directories (can be regenerated)
+exp1_*/
+exp3_*/
+exp4_*/
+output*/
+test_*/
+
+# Large data files
+harp_csvs/
+
+# Generated files
+*.dat
+*.log
+combined_*.tm
+path_comparison_report.txt
+tms_needing_rerun.txt
+
+# Python
+__pycache__/
+*.pyc

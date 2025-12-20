@@ -1,0 +1,23 @@
+# Simple 4-host, 2-tier topology
+# 2 ToR switches, each with 2 hosts
+# 1 aggregation switch connecting the ToRs
+
+nodes 4
+tiers 2
+podsize 4
+
+# Tier 0: ToR switches
+tier 0
+downlink_speed_gbps 10
+radix_up 1
+radix_down 2
+oversubscribed 2
+switch_latency_ns 100
+downlink_latency_ns 1000
+
+# Tier 1: Aggregation switch
+tier 1
+downlink_speed_gbps 10
+radix_down 2
+switch_latency_ns 100
+downlink_latency_ns 1000

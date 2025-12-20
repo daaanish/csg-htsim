@@ -1,0 +1,6 @@
+{
+  "topology": "./demo/topo/abilene_slow.json",
+  "global_rate_mbps": 1000,
+  "default_phase_duration_sec": 0.5,
+  "tm_dir": "./demo/tms/abilene_tms"
+}

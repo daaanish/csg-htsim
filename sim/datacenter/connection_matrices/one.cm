@@ -1,0 +1,7 @@
+Nodes 8
+Tiers 2
+Connections 2
+0->6 start 0 size 2000000
+5->1 start 10 size 2000000
+
+

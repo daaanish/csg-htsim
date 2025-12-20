@@ -1,0 +1,8 @@
+{
+  "hosts": ["h0","h1","h2"],
+  "links": [
+    {"src":"h0","dst":"h1","speed_mbps":50,"latency_us":1},
+    {"src":"h1","dst":"h2","speed_mbps":50,"latency_us":1},
+    {"src":"h0","dst":"h2","speed_mbps":50,"latency_us":1}
+  ]
+}

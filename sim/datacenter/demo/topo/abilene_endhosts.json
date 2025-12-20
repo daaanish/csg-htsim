@@ -1,0 +1,45 @@
+{
+  "hosts": [
+    "h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10", "h11", "h12",
+    "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12"
+  ],
+  "links": [
+    {"src": "h1", "dst": "r1", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "h2", "dst": "r2", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "h3", "dst": "r3", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "h4", "dst": "r4", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "h5", "dst": "r5", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "h6", "dst": "r6", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "h7", "dst": "r7", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "h8", "dst": "r8", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "h9", "dst": "r9", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "h10", "dst": "r10", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "h11", "dst": "r11", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "h12", "dst": "r12", "speed_mbps": 10000, "latency_us": 10},
+
+    
+    {"src": "r1", "dst": "r2", "speed_mbps": 10000, "latency_us": 10},
+
+    {"src": "r2", "dst": "r5", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "r2", "dst": "r6", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "r2", "dst": "r12", "speed_mbps": 10000, "latency_us": 10},
+
+    {"src": "r3", "dst": "r6", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "r3", "dst": "r9", "speed_mbps": 10000, "latency_us": 10},
+
+    {"src": "r4", "dst": "r7", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "r4", "dst": "r10", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "r4", "dst": "r11", "speed_mbps": 10000, "latency_us": 10},
+
+    {"src": "r5", "dst": "r7", "speed_mbps": 10000, "latency_us": 10},
+    {"src": "r5", "dst": "r8", "speed_mbps": 10000, "latency_us": 10},
+
+    {"src": "r6", "dst": "r7", "speed_mbps": 10000, "latency_us": 10},
+
+    {"src": "r8", "dst": "r10", "speed_mbps": 10000, "latency_us": 10},
+
+    {"src": "r9", "dst": "r12", "speed_mbps": 10000, "latency_us": 10},
+
+    {"src": "r10", "dst": "r11", "speed_mbps": 10000, "latency_us": 10}
+  ]
+}

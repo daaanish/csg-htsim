@@ -1,0 +1,10 @@
+: ndp_0_4=89
+: ndp_sink_0_4=91
+: ndp_1_5=92
+: ndp_sink_1_5=94
+# pktsize=1500 bytes
+# hostnicrate = 1000 Mbps
+# rtt =1e-06
+# numrecords=0
+# transpose=0
+# TRACE

@@ -1,0 +1,25 @@
+# Minimal 2-host topology: both hosts on a single ToR
+# Note: downlink_speed_gbps accepts integers, so we use 1 Gbps here.
+# Use -linkspeed on the CLI to set NDP pacing (e.g., 10 Mbps).
+
+nodes 2
+tiers 2
+podsize 2
+
+# Tier 0: ToR
+tier 0
+downlink_speed_gbps 1
+radix_up 2
+radix_down 2
+switch_latency_ns 0
+downlink_latency_ns 1000
+
+# Tier 1: Aggregation (top tier in 2-tier)
+# One aggregation switch with two downlinks (to the single ToR),
+# bundle size 2 so TOR up-radix (2) matches agg count x bundle.
+tier 1
+downlink_speed_gbps 1
+radix_down 2
+bundle 2
+switch_latency_ns 0
+downlink_latency_ns 1000

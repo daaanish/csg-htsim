@@ -1,0 +1,6 @@
+{
+  "hosts": ["h0", "h1"],
+  "links": [
+    {"src": "h0", "dst": "h1", "speed_mbps": 1000, "latency_us": 1}
+  ]
+}

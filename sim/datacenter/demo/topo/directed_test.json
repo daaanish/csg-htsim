@@ -1,0 +1,21 @@
+{
+  "hosts": ["a", "b", "c"],
+  "links": [
+    {
+      "src": "a",
+      "dst": "b",
+      "speed_Gbps": 100,
+      "latency_us": 10,
+      "bidirectional": false
+    },
+    {
+      "src": "b",
+      "dst": "c",
+      "speed_Gbps": 100,
+      "latency_us": 10,
+      "bidirectional": true,
+      "rev_speed_Gbps": 40,
+      "rev_latency_us": 20
+    }
+  ]
+}

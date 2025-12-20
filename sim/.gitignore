@@ -1,0 +1,28 @@
+# Build artifacts
+*.o
+*.a
+libhtsim.a
+
+# Binaries
+parse_output
+htsim_*
+
+# Log files
+*.dat
+*.log
+*.log.ql
+*.ql
+*.txt
+
+# Python
+__pycache__/
+*.pyc
+
+# Experiment outputs (regeneratable)
+demo/experiments/harp_experiment/exp*/
+demo/experiments/harp_experiment/harp_csvs/
+demo/experiments/harp_experiment/combined_*.tm
+demo/experiments/harp_experiment/*.png
+
+# Test outputs
+old_tests/

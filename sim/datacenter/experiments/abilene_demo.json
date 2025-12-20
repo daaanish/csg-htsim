@@ -1,0 +1,50 @@
+{
+  "topology": "./demo/topo/abilene_slow.json",
+  "global_rate_mbps": 1000,
+  "timeline": [
+    {
+      "name": "t1",
+      "duration_sec": 1.5,
+      "flows": [
+        {"src": 1, "dst": 10, "paths": [0], "weights": [1.0], "size": 15000000}
+      ]
+    },
+    {
+      "name": "t2",
+      "duration_sec": 1.5,
+      "flows": [
+        {"src": 1, "dst": 10, "paths": [0, 1], "weights": [0.5, 0.5], "size": 15000000}
+      ]
+    },
+    {
+      "name": "t3",
+      "duration_sec": 1.5,
+      "flows": [
+        {"src": 1, "dst": 10, "paths": [0, 1], "weights": [0.7, 0.3], "size": 15000000}
+      ]
+    },
+        {
+      "name": "t4",
+      "duration_sec": 1.5,
+      "flows": [
+        {"src": 1, "dst": 10, "paths": [0, 1], "weights": [0.3, 0.7], "size": 15000000}
+      ]
+    },
+        {
+      "name": "t5",
+      "duration_sec": 1.5,
+      "flows": [
+        {"src": 1, "dst": 10, "paths": [0], "weights": [1.0], "size": 15000000},
+        {"src": 1, "dst": 10, "paths": [1], "weights": [1.0], "size": 15000000}
+      ]
+    },
+        {
+      "name": "t6",
+      "duration_sec": 1.5,
+      "flows": [
+        {"src": 1, "dst": 10, "paths": [0], "weights": [1.0], "size": 15000000},
+        {"src": 1, "dst": 10, "paths": [2], "weights": [1.0], "size": 15000000}
+      ]
+    }
+  ]
+}

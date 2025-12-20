@@ -1,0 +1,22 @@
+# Ultra-minimal 2-host, 2-tier topology (one ToR, one Agg) with single uplinks
+# We "fake" a leaf-spine by giving the ToR only 1 up port and the Agg 1 down port.
+# This creates 1 ToR switch (tier 0) and 1 aggregation switch (tier 1); no cores.
+# Because pods require podsize, we keep podsize 2 so both hosts are in one pod.
+
+nodes 2
+tiers 2
+podsize 2
+
+tier 0
+downlink_speed_gbps 1
+radix_up 1
+radix_down 2
+oversubscribed 2
+switch_latency_ns 0
+downlink_latency_ns 1000
+
+tier 1
+downlink_speed_gbps 1
+radix_down 1
+switch_latency_ns 0
+downlink_latency_ns 1000

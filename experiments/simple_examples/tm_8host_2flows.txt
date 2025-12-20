@@ -1,0 +1,8 @@
+# Traffic matrix: 2 flows for 8-node topology
+Nodes 8
+Connections 2
+Triggers 0
+Failures 0
+
+0->4 start 0 size 104857600
+1->5 start 500000 size 5242880

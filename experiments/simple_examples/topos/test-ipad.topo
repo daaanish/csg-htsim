@@ -1,0 +1,20 @@
+nodes 6
+tiers 2
+podsize 8
+# 2-Tier Leaf-Spine Topology with 6 hosts
+
+# Tier 0: ToR
+tier 0
+downlink_speed_gbps 10
+radix_up 2
+radix_down 4
+switch_latency_ns 0
+downlink_latency_ns 1000
+oversubscribed 2
+# 2 ToRs, each with 4 downlinks (to hosts) and 2 uplinks (to aggs)
+
+# Tier 1: Aggregation (top tier in 2-tier)
+# 2 aggregation switches with two downlinks (to the two ToRs),
+tier 1
+downlink_speed_gbps 10
+radix_down 2

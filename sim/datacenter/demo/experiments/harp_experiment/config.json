@@ -1,0 +1,26 @@
+{
+    "name": "harp_abilene_experiment",
+    "description": "HARP traffic matrix simulations on Abilene topology using Quantized Rate Aggregation",
+    
+    "topology": "/home/dex/purdue/research/htsim/csg-htsim-master/sim/datacenter/demo/topo/abilene_harp.json",
+    "csv_dir": "./harp_csvs",
+    "num_nodes": 12,
+    
+    "simulation": {
+        "base_rate_mbps": 1.0,
+        "flow_size_bytes": 1000000,
+        "end_sec": 12.0,
+        "queue_type": "composite"
+    },
+    
+    "output": {
+        "results_dir": "results",
+        "logs_dir": "logs",
+        "tms_dir": "generated_tms"
+    },
+    
+    "batch": {
+        "parallel_jobs": 4,
+        "tm_range": null
+    }
+}

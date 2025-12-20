@@ -1,0 +1,26 @@
+Hosts 2
+Switches 1
+Links 2
+
+# Define hosts
+host h1 , queue q1
+host h2 , queue q2
+
+# Define switch with two ports
+switch s1 , queue q3 queue q4
+
+# Define host queues
+queue q1 , type queue speed 1 Mbps size 1000 dst p1
+queue q2 , type queue speed 1 Mbps size 1000 dst p2
+
+# Define switch queues
+queue q3 , type queue speed 1 Mbps size 1000 dst p3
+queue q4 , type queue speed 1 Mbps size 1000 dst p4
+
+# Define pipes to connect hosts to switch
+pipe p1 , latency 10 us dst q3
+pipe p2 , latency 10 us dst q4
+
+# Define pipes to connect switch back to hosts
+pipe p3 , latency 10 us dst q2
+pipe p4 , latency 10 us dst q1

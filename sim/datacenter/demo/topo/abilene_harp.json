@@ -1,0 +1,37 @@
+{
+  "hosts": [
+    "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12"
+  ],
+  "links": [
+    { "src": "r1", "dst": "r2", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r2", "dst": "r1", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r2", "dst": "r5", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r2", "dst": "r6", "speed_mbps": 2.48, "latency_us": 10, "bidirectional": false },
+    { "src": "r2", "dst": "r12", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r3", "dst": "r6", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r3", "dst": "r9", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r4", "dst": "r7", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r4", "dst": "r10", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r4", "dst": "r11", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r5", "dst": "r2", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r5", "dst": "r7", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r5", "dst": "r8", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r6", "dst": "r2", "speed_mbps": 2.48, "latency_us": 10, "bidirectional": false },
+    { "src": "r6", "dst": "r3", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r6", "dst": "r7", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r7", "dst": "r4", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r7", "dst": "r5", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r7", "dst": "r6", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r8", "dst": "r5", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r8", "dst": "r10", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r9", "dst": "r3", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r9", "dst": "r12", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r10", "dst": "r4", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r10", "dst": "r8", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r10", "dst": "r11", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r11", "dst": "r4", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r11", "dst": "r10", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r12", "dst": "r2", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false },
+    { "src": "r12", "dst": "r9", "speed_mbps": 9.92, "latency_us": 10, "bidirectional": false }
+  ]
+}
