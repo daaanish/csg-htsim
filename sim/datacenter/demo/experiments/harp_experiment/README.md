@@ -35,6 +35,7 @@ harp_experiment/
 ├── compute_mlu.py              # MLU computation utilities
 ├── plot_exp4_comparison.py     # Comparison plots
 ├── run_loss_vs_time.py         # Loss vs time analysis
+├── tm_breakdown.py             # If you have a single HARP-obtained CSV from the HARP repo this can break it down to individual TMs
 
 # Data
 ├── firebolt_dl/                # Gurobi optimal split ratios
