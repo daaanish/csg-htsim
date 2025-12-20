@@ -15,7 +15,7 @@ if 'tm_id' not in df.columns:
     raise KeyError("Column 'tm_id' not found in dataframe")
 
 # Output directory next to the input CSV
-out_dir = os.path.join(os.path.dirname(csv_path), 'tms_by_id')
+out_dir = os.path.join(os.path.dirname(csv_path), 'harp_csvs')
 os.makedirs(out_dir, exist_ok=True)
 
 # Split and write one CSV per tm_id (handle NaN values)
