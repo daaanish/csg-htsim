@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 
-csv_path = '/home/dex/purdue/research/htsim/all_tms.csv'
+csv_path = '../../../../../all_tms.csv'
 if not os.path.isfile(csv_path):
     raise FileNotFoundError(f"CSV not found: {csv_path}")
 
