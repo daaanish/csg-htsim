@@ -2,7 +2,7 @@
     "name": "harp_abilene_experiment",
     "description": "HARP traffic matrix simulations on Abilene topology using Quantized Rate Aggregation",
     
-    "topology": "/home/dex/purdue/research/htsim/csg-htsim-master/sim/datacenter/demo/topo/abilene_harp.json",
+    "topology": "../../topo/abilene_harp.json",
     "csv_dir": "./harp_csvs",
     "num_nodes": 12,
     
