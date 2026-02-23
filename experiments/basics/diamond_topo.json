@@ -1,0 +1,48 @@
+{
+    "hosts": [
+        "h1",
+        "h2",
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+    ],
+    "links": [
+        {
+            "src": "h1",
+            "dst": "s1",
+            "speed_gbps": 10,
+            "latency_us": 1
+        },
+        {
+            "src": "s1",
+            "dst": "s2",
+            "speed_gbps": 10,
+            "latency_us": 1
+        },
+        {
+            "src": "s2",
+            "dst": "s4",
+            "speed_gbps": 10,
+            "latency_us": 1
+        },
+        {
+            "src": "s1",
+            "dst": "s3",
+            "speed_gbps": 10,
+            "latency_us": 1
+        },
+        {
+            "src": "s3",
+            "dst": "s4",
+            "speed_gbps": 10,
+            "latency_us": 1
+        },
+        {
+            "src": "s4",
+            "dst": "h2",
+            "speed_gbps": 10,
+            "latency_us": 1
+        }
+    ]
+}

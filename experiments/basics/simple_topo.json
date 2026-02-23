@@ -1,0 +1,23 @@
+{
+    "hosts": [
+        "h1",
+        "h2",
+        "s1"
+    ],
+    "links": [
+        {
+            "src": "h1",
+            "dst": "s1",
+            "speed_gbps": 10,
+            "latency_us": 1,
+            "bidirectional": true
+        },
+        {
+            "src": "s1",
+            "dst": "h2",
+            "speed_gbps": 10,
+            "latency_us": 1,
+            "bidirectional": true
+        }
+    ]
+}

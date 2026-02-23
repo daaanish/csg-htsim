@@ -1,0 +1,9 @@
+{
+  "hosts": ["src", "A", "B", "dst"],
+  "links": [
+    {"src": "src", "dst": "A",   "speed_mbps": 200, "latency_us": 1},
+    {"src": "A",   "dst": "dst", "speed_mbps": 200, "latency_us": 1},
+    {"src": "src", "dst": "B",   "speed_mbps": 200, "latency_us": 1},
+    {"src": "B",   "dst": "dst", "speed_mbps": 200, "latency_us": 1}
+  ]
+}

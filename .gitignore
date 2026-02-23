@@ -4,7 +4,35 @@
 *.bak2
 *#
 *.o
+.DS_Store
 .DS_store
 logout.dat
 /sim/datacenter/htsim_*
 /sim/tests/htsim_*
+
+# Large archive
+sim.tar.zst
+
+# Harp experiment data (50k+ files, 337 MB — regeneratable)
+sim/datacenter/demo/experiments/
+sim/datacenter/demo/other_tms/
+sim/datacenter/demo/.DS_Store
+
+# Stray images / experiment outputs
+sim/datacenter/experiments/
+
+# Test / scratch TM files
+sim/datacenter/test_*.tm
+sim/datacenter/cbr_test*.tm
+sim/datacenter/test_*.cpp
+
+# Scratch scripts
+sim/datacenter/run_*.sh
+sim/datacenter/runner_*.sh
+
+# Experiment .dat output files
+experiments/**/*.dat
+
+# Template / old files
+sim/datacenter/main_cbr_template.cpp
+sim/datacenter/example_custom_paths.cpp

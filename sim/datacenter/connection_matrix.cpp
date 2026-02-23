@@ -674,64 +674,50 @@ void tokenize(string const &str, const char delim, vector<string> &out)
 
 bool ConnectionMatrix::load(istream& file){
     uint32_t conns_size = 0, triggers_size = 0, failures_size = 0;
-  
+
     assert(!conns);
     conns = new vector<connection*>();
 
-    /*
-    fscanf(f,"Nodes %d\n",&N);
-    fscanf(f,"Connections %d\n",&conns_size);
-
-    for (uint32_t i = 0;i < conns_size;i++){
-        connection * c = new connection;
-        double start;  // note start in the file can be a double in units of us
-        if (fscanf(f,"%u->%u start %lf size %u\n", &c->src, &c->dst, &start, &c->size) < 4) {
-            perror("Connection matrix load error");
-            fprintf(stderr, "Incorrect syntax for connection %d\n", i);
-            return false;
-        }
-        c->start = timeFromUs(start);
-        conns->push_back(c);
-    }
-
-    
-    fclose(f);
-    */
-    
     std::string line;
     int linecount = 0;
     uint32_t conn_count = 0;
     uint32_t trig_count = 0;
-    // parse header
+
+    // Parse header lines (Nodes, Connections, Triggers, Failures).
     while (std::getline(file, line)) {
-                linecount++;
-                vector<string> tokens;
-                tokenize(line, ' ', tokens);
-                
-                if (tokens.size() == 0 || tokens[0][0] == '#') {
-                        continue;
-                } else         if (tokens[0] == "Nodes") {
-                        N = stoi(tokens[1]);
-                } else if (tokens[0] == "Connections") {
-                        conns_size = stoi(tokens[1]);
-                } else if (tokens[0] == "Triggers") {
-                        triggers_size = stoi(tokens[1]);
-                } else if (tokens[0] == "Failures") {
-                        failures_size = stoi(tokens[1]);
-                }
-                else if (tokens[0].find("->") != string::npos || tokens[0] == "trigger" || tokens[0] == "failure") {
-                        // we're done with the header
-                        break;
-                }
+        linecount++;
+        vector<string> tokens;
+        tokenize(line, ' ', tokens);
+
+        if (tokens.size() == 0 || tokens[0][0] == '#') {
+            continue;
+        } else if (tokens[0] == "Nodes") {
+            N = stoi(tokens[1]);
+        } else if (tokens[0] == "Connections") {
+            conns_size = stoi(tokens[1]);
+        } else if (tokens[0] == "Triggers") {
+            triggers_size = stoi(tokens[1]);
+        } else if (tokens[0] == "Failures") {
+            failures_size = stoi(tokens[1]);
+        } else if (tokens[0].find("->") != string::npos ||
+                   tokens[0] == "trigger" || tokens[0] == "failure") {
+            break;  // First body line reached.
+        }
     }
     linecount--;
-    cout << "Nodes: " << N << " Connections: " << conns_size << " Triggers: " << triggers_size << " Failures: " << failures_size << endl;
-    //parse rest of file
+    cout << "Nodes: " << N << " Connections: " << conns_size
+         << " Triggers: " << triggers_size << " Failures: " << failures_size << endl;
+
+    // Parse body: connections, triggers, failures.
     do {
         linecount++;
         vector<string> tokens;
         tokenize(line, ' ', tokens);
         if (tokens.size() < 1) {
+            continue;
+        }
+        // Skip blank lines and comment lines in body section
+        if (tokens[0].empty() || tokens[0][0] == '#') {
             continue;
         }
         size_t dstix = tokens[0].find("->");
@@ -842,20 +828,20 @@ bool ConnectionMatrix::load(istream& file){
                     i++;
                     c->trigger = stoi(tokens[i]);
                     c->start = TRIGGER_START;
-                    map<uint32_t, trigger*>::iterator it = triggers.find(c->trigger);
+                    auto it = triggers.find(c->trigger);
                     if (it == triggers.end()) {
-                                trigger *t = new trigger;
-                                t->id = c->trigger;
-                                t->count = 0;
-                                t->type = UNSPECIFIED;
-                                t->trigger = 0;
-                                assert(c->flowid);
-                                t->flows.push_back(c->flowid);
-                                triggers[t->id] = t;
+                        trigger *t = new trigger;
+                        t->id = c->trigger;
+                        t->count = 0;
+                        t->type = UNSPECIFIED;
+                        t->trigger = 0;
+                        assert(c->flowid);
+                        t->flows.push_back(c->flowid);
+                        triggers[t->id] = t;
                     } else {
-                                trigger *t = it->second;
-                                assert(c->flowid);
-                                t->flows.push_back(c->flowid);
+                        trigger *t = it->second;
+                        assert(c->flowid);
+                        t->flows.push_back(c->flowid);
                     }
                 } else if (tokens[i] == "send_done_trigger") {
                     i++;
@@ -866,6 +852,19 @@ bool ConnectionMatrix::load(istream& file){
                 } else if (tokens[i] == "prio") {
                     i++;
                     c->priority = stoi(tokens[i]);
+                } else if (tokens[i] == "demand") {
+                    // d_st: total application demand (bytes) - metadata for reporting
+                    i++;
+                    c->demand = stod(tokens[i]);
+                } else if (tokens[i] == "admitted") {
+                    // b_st: admitted traffic volume from TE solver (bytes)
+                    // When >0, drives the CBR flow size (overrides 'size')
+                    i++;
+                    c->admitted = stod(tokens[i]);
+                } else if (tokens[i] == "rate") {
+                    // Per-flow CBR sending rate in Mbps (overrides CLI -rate)
+                    i++;
+                    c->rate_mbps = stod(tokens[i]);
                 } else {
                     cerr << "Error: unknown token: " << tokens[i] << " at line "
                          << linecount << endl;
@@ -873,18 +872,17 @@ bool ConnectionMatrix::load(istream& file){
                 }
             }
             if (c->start == NO_START && !c->trigger) {
-                        cerr << "Error: no start method specified for flow at line "
-                                << linecount << endl;
-                        exit(1);
+                cerr << "Error: no start method specified for flow at line "
+                     << linecount << endl;
+                exit(1);
             }
             if (c->start != TRIGGER_START && c->trigger) {
-                        cerr << "Error: both start time and trigger specified for flow at line "
-                                << linecount << endl;
-                        exit(1);
+                cerr << "Error: both start time and trigger specified for flow at line "
+                     << linecount << endl;
+                exit(1);
             }
             conns->push_back(c);
         } else if (tokens[0] == "trigger") {
-            // we're parsing a trigger
             trigger *t = new trigger;
             trig_count++;
             t->id = 0;
@@ -892,107 +890,100 @@ bool ConnectionMatrix::load(istream& file){
             t->type = UNSPECIFIED;
             t->trigger = 0;
             for (size_t i = 1; i < tokens.size(); i++) {
-                        if (tokens[i] == "id") {
-                                i++;
-                                t->id = stoi(tokens[i]);
-                                if (t->id == 0) {
-                                    cerr << "Trigger ID zero is not allowed\n";
-                                    exit(1);
-                                }
-                        } else if (tokens[i] == "count") {
-                                i++;
-                                t->count = stoi(tokens[i]);
-                        } else if (tokens[i] == "oneshot") {
-                                assert(t->type == UNSPECIFIED);
-                                t->type = SINGLE_SHOT;
-                        } else if (tokens[i] == "multishot") {
-                                assert(t->type == UNSPECIFIED);
-                                t->type = MULTI_SHOT;                                
-                        } else if (tokens[i] == "barrier") {
-                                assert(t->type == UNSPECIFIED);
-                                t->type = BARRIER;
-                        } else {
-                                cerr << "Error: unknown id: " << tokens[i] << " at line " << linecount << endl;
-                                exit(1);
-                        }
-            }
-
-            if (!t->id) {
-                        cerr << "Trigger with no id at line " << linecount << endl;
+                if (tokens[i] == "id") {
+                    i++;
+                    t->id = stoi(tokens[i]);
+                    if (t->id == 0) {
+                        cerr << "Trigger ID zero is not allowed\n";
                         exit(1);
+                    }
+                } else if (tokens[i] == "count") {
+                    i++;
+                    t->count = stoi(tokens[i]);
+                } else if (tokens[i] == "oneshot") {
+                    assert(t->type == UNSPECIFIED);
+                    t->type = SINGLE_SHOT;
+                } else if (tokens[i] == "multishot") {
+                    assert(t->type == UNSPECIFIED);
+                    t->type = MULTI_SHOT;
+                } else if (tokens[i] == "barrier") {
+                    assert(t->type == UNSPECIFIED);
+                    t->type = BARRIER;
+                } else {
+                    cerr << "Error: unknown id: " << tokens[i]
+                         << " at line " << linecount << endl;
+                    exit(1);
+                }
+            }
+            if (!t->id) {
+                cerr << "Trigger with no id at line " << linecount << endl;
+                exit(1);
             }
             if (t->type == UNSPECIFIED) {
-                        cerr << "Trigger with no type at line " << linecount << endl;
-                        exit(1);
+                cerr << "Trigger with no type at line " << linecount << endl;
+                exit(1);
             }
-            map<triggerid_t, trigger*>::iterator it = triggers.find(t->id);
+            auto it = triggers.find(t->id);
             if (it == triggers.end()) {
-                        // first we've heard of this trigger ID
-                        triggers[t->id] = t;
+                triggers[t->id] = t;
             } else {
-                        // a trigger with this ID already exists, so we'll use that
-                        trigger *old_trigger = it->second;
-                        assert(t->id == old_trigger->id);
-                        assert(old_trigger->type == UNSPECIFIED);
-                        old_trigger->type = t->type;
-                        old_trigger->count = t->count;
-                        delete t;
+                trigger *old_trigger = it->second;
+                assert(t->id == old_trigger->id);
+                assert(old_trigger->type == UNSPECIFIED);
+                old_trigger->type = t->type;
+                old_trigger->count = t->count;
+                delete t;
             }
-        } else if (tokens[0] == "failure"){
-                assert (failures.size()<failures_size);
-
+        } else if (tokens[0] == "failure") {
+            assert(failures.size() < failures_size);
             failure *f = new failure;
-
             for (size_t i = 1; i < tokens.size(); i++) {
-                        if (tokens[i] == "switch_type") {
-                                i++;
-                                if (tokens[i]=="TOR")
-                                        f->switch_type = FatTreeSwitch::TOR;
-                                else if (tokens[i]=="AGG")
-                                        f->switch_type = FatTreeSwitch::AGG;
-                                else if (tokens[i]=="CORE")
-                                        f->switch_type = FatTreeSwitch::CORE;
-                                else {
-                                        cout << "Unknown switch type " << tokens[i] << ", expecting one of TOR, AGG or CORE "<<endl;
-                                        exit(1);
-                                }
-                        } else if (tokens[i] == "switch_id") {
-                                i++;
-                                f->switch_id = stoi(tokens[i]);
-                        } else if (tokens[i] == "link_id") {
-                                i++;
-                                f->link_id = stoi(tokens[i]);
-                        } else {
-                                cerr << "Error: unknown failure attribute " << tokens[i] << " at line " << linecount << endl;
-                                exit(1);
-                        }
+                if (tokens[i] == "switch_type") {
+                    i++;
+                    if      (tokens[i] == "TOR")  f->switch_type = FatTreeSwitch::TOR;
+                    else if (tokens[i] == "AGG")  f->switch_type = FatTreeSwitch::AGG;
+                    else if (tokens[i] == "CORE") f->switch_type = FatTreeSwitch::CORE;
+                    else {
+                        cout << "Unknown switch type " << tokens[i]
+                             << ", expecting TOR, AGG or CORE" << endl;
+                        exit(1);
+                    }
+                } else if (tokens[i] == "switch_id") {
+                    i++;
+                    f->switch_id = stoi(tokens[i]);
+                } else if (tokens[i] == "link_id") {
+                    i++;
+                    f->link_id = stoi(tokens[i]);
+                } else {
+                    cerr << "Error: unknown failure attribute " << tokens[i]
+                         << " at line " << linecount << endl;
+                    exit(1);
+                }
             }
-                failures.push_back(f);
+            failures.push_back(f);
         } else {
             cerr << "Error: unknown id: " << tokens[0] << " at line " << linecount << endl;
             exit(1);
         }
     } while (std::getline(file, line));
 
-    // some sanity checks now we've loaded all the data
+    // Sanity checks.
     if (conn_count != conns_size) {
-                cerr << "Mismatch in connection count, specified: " << conns_size
-                        << " actual " << conn_count << endl;
-                exit(1);
+        cerr << "Mismatch in connection count: specified " << conns_size
+             << ", actual " << conn_count << endl;
+        exit(1);
     }
     if (trig_count != triggers_size) {
-                cerr << "Mismatch in trigger count, specified: " << triggers_size
-                        << " actual " << trig_count << endl;
-                exit(1);
+        cerr << "Mismatch in trigger count: specified " << triggers_size
+             << ", actual " << trig_count << endl;
+        exit(1);
     }
     if (failures.size() != failures_size) {
-                cerr << "Mismatch in failure count, specified: " << failures_size
-                        << " actual " << failures.size() << endl;
-                exit(1);
+        cerr << "Mismatch in failure count: specified " << failures_size
+             << ", actual " << failures.size() << endl;
+        exit(1);
     }
-
-    map<triggerid_t, trigger*>::iterator it;
-    for (it = triggers.begin(); it != triggers.end(); it++) {
+    for (auto it = triggers.begin(); it != triggers.end(); it++) {
         if (it->second->type == UNSPECIFIED) {
             cerr << "Trigger " << it->second->id << " referenced but not specified\n";
             exit(1);
