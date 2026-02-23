@@ -1,7 +1,6 @@
 # TE Demand vs Admitted Experiment
 
-Simple 2-node, 2-path topology to test how demand (d_st) and admitted (b_st)
-volumes interact with link capacity.
+Simple 2-node, 2-path topology to test demand (d_st) and admitted (b_st) functionality
 
 ```
   src ---[path A, 200 Mbps]---> dst
