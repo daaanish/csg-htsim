@@ -1,0 +1,6 @@
+23 feb 2026
+D_st and B_st are supposed to be per pair (source-dest).
+Need to work with a given D_st, a threshold T and a set of split ratios (w1, w2 etc.). The split ratios need not sum to 1.
+Given a D_st, see if it exceeds T, if it does, traffic minus threshold will be sent using one split ratios config w1, traffic beyond that will be sent using split ratios config w2.
+May be possible to just use D_st and T at the time im creating the TM file cus different flows can easily be routed using different split ratios/paths given what htsim can already do.
+The traffic actually being sent is going to be my B_st.

@@ -638,10 +638,11 @@ static FlowInfo create_flow(
     CbrSrc* cbrSrc = new CbrSrc(evlist, rate, timeFromMs(0), timeFromMs(0));
     CbrSink* cbrSnk = new CbrSink();
 
-    // Flow size: admitted overrides size.
+    // Flow size: 'size' is the per-flow volume.  'admitted' is pair-level
+    // metadata; only use it as fallback when size is absent.
     uint64_t active_bytes = 0;
-    if (crt->admitted > 0)      active_bytes = (uint64_t)crt->admitted;
-    else if (crt->size > 0)     active_bytes = (uint64_t)crt->size;
+    if (crt->size > 0)          active_bytes = (uint64_t)crt->size;
+    else if (crt->admitted > 0) active_bytes = (uint64_t)crt->admitted;
     if (active_bytes > 0)       cbrSrc->set_flow_size_bytes(active_bytes);
 
     sink_logger.monitorSink(cbrSnk);

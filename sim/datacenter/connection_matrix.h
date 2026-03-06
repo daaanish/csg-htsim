@@ -30,6 +30,15 @@ struct connection{
     // Explicit routes from Gurobi - bypasses k-shortest path computation
     // Each inner vector is a list of queue names (e.g., "q_r1_r2", "q_r2_r5")
     std::vector<std::vector<std::string>> explicit_routes;
+
+    // --- Traffic-engineering demand/admitted extensions ---
+    // d_st: total application demand (bytes). Static metadata for reporting only.
+    double demand{0};
+    // b_st: traffic volume admitted by the offline TE solver (bytes).
+    // When >0, this becomes the active flow-size that drives CBR generation.
+    double admitted{0};
+    // Per-flow CBR sending rate override (Mbps). 0 = use CLI default.
+    double rate_mbps{0};
 };
 
 typedef enum {UNSPECIFIED, SINGLE_SHOT, MULTI_SHOT, BARRIER} trigger_type;

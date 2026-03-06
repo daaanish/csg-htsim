@@ -9,9 +9,9 @@ Simple 2-node, 2-path topology to test demand (d_st) and admitted (b_st) functio
 
 Two flows (one per path), each with its own b_st and sending rate.
 
-**Scenario 1 (balanced):** b_st = 2 units on each path, rate = capacity → no loss.
+**Scenario 1 (balanced):** b_st = 2 units on each path, rate = capacity ==> no loss.
 **Scenario 2 (unbalanced):** b_st = 3 units on A, 1 unit on B. Path A rate exceeds
-capacity → packet loss on A, path B fine.
+capacity ==> packet loss on A, path B fine.
 
 ## Usage
 

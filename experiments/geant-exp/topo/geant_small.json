@@ -1,0 +1,244 @@
+{
+  "hosts": [
+    "r1",
+    "r2",
+    "r3",
+    "r4",
+    "r5",
+    "r6",
+    "r7",
+    "r8",
+    "r9",
+    "r10",
+    "r11",
+    "r12",
+    "r13",
+    "r14",
+    "r15",
+    "r16",
+    "r17",
+    "r18",
+    "r19",
+    "r20",
+    "r21",
+    "r22"
+  ],
+  "links": [
+    {
+      "src": "r1",
+      "dst": "r3",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r1",
+      "dst": "r5",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r1",
+      "dst": "r10",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r1",
+      "dst": "r16",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r1",
+      "dst": "r20",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r2",
+      "dst": "r7",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r2",
+      "dst": "r14",
+      "speed_mbps": 1,
+      "latency_us": 10
+    },
+    {
+      "src": "r2",
+      "dst": "r15",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r3",
+      "dst": "r7",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r3",
+      "dst": "r13",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r4",
+      "dst": "r5",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r4",
+      "dst": "r17",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r4",
+      "dst": "r21",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r5",
+      "dst": "r7",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r5",
+      "dst": "r8",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r5",
+      "dst": "r11",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r5",
+      "dst": "r13",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r5",
+      "dst": "r15",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r5",
+      "dst": "r19",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r6",
+      "dst": "r7",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r6",
+      "dst": "r13",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r6",
+      "dst": "r18",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r7",
+      "dst": "r14",
+      "speed_mbps": 1,
+      "latency_us": 10
+    },
+    {
+      "src": "r7",
+      "dst": "r22",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r8",
+      "dst": "r13",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r9",
+      "dst": "r10",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r9",
+      "dst": "r20",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r10",
+      "dst": "r21",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r11",
+      "dst": "r22",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r12",
+      "dst": "r13",
+      "speed_mbps": 1,
+      "latency_us": 10
+    },
+    {
+      "src": "r12",
+      "dst": "r15",
+      "speed_mbps": 1,
+      "latency_us": 10
+    },
+    {
+      "src": "r15",
+      "dst": "r22",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r16",
+      "dst": "r22",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r17",
+      "dst": "r19",
+      "speed_mbps": 100,
+      "latency_us": 10
+    },
+    {
+      "src": "r18",
+      "dst": "r22",
+      "speed_mbps": 24,
+      "latency_us": 10
+    },
+    {
+      "src": "r19",
+      "dst": "r22",
+      "speed_mbps": 100,
+      "latency_us": 10
+    }
+  ]
+}

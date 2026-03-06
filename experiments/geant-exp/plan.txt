@@ -1,0 +1,106 @@
+================================================================================
+GEANT EXPERIMENT PLAN
+================================================================================
+
+GOAL
+----
+Two experiments on GEANT topology using htsim_cbr:
+  Exp1: Two-stage threshold routing (W1/W2/T_st) → measure effective flow
+  Exp2: Uniform loss model (single W) → validate (U-1)/U per-edge loss
+
+DESIGN PRINCIPLES
+-----------------
+- Simple scripts, hardcoded config at top of each file
+- No argparse/CLI complexity — edit variables directly
+- Reuse htsim FLOW_STATS output (already gives per-flow sent/delivered)
+- Reuse generate_tm.py for TM generation
+- Sanity test each piece before moving on
+
+DIRECTORY LAYOUT
+----------------
+experiments/geant-exp/
+├── topo/
+│   ├── geant.json           # 22 nodes, full speed (10G/2.4G/155M)
+│   ├── geant_small.json     # 100x scaled down (100/24/1 Mbps)
+│   └── geant.txt            # original source
+├── common/
+│   ├── generate_tm.py       # TM generator (threshold-based, shared by both exps)
+│   └── parse_results.py     # parse htsim stdout → per-flow CSV
+├── exp1_threshold/
+│   ├── run.py               # one-click run script for exp1
+│   └── config.py            # all tunables: d_st, W1, W2, T_st, r, etc.
+├── exp2_uniform_loss/
+│   ├── run.py               # one-click run script for exp2
+│   ├── config.py            # all tunables: d_st, W, r, etc.
+│   └── predict_loss.py      # math model: compute (U-1)/U per edge
+├── setup_help.md
+└── plan.txt                 # this file
+
+HOW THINGS CONNECT
+------------------
+
+1. generate_tm.py (ALREADY EXISTS, needs minor cleanup)
+   Input:  list of pairs with (src, dst, d_st, T_st, W1, W2, paths)
+   Logic:  per path k: volume_k = W1_k * min(d,T) + W2_k * max(0,d-T)
+           num_flows_k = round(volume_k / r)
+   Output: .tm file with N flows, each pinned to paths_idx
+
+2. parse_results.py (NEW — simple)
+   Input:  htsim stdout (piped or from file) + the .tm file
+   Logic:  - grep FLOW_STATS lines → extract flow_id, sent, delivered
+           - read .tm file → extract flow_id → paths_idx mapping
+           - join on flow_id
+   Output: CSV with columns: src, dst, path_idx, flow_id, rate, sent, delivered
+
+3. exp1: run.py
+   - imports config from config.py (d_st, W1, W2, T_st, r, topo, etc.)
+   - calls generate_tm.py to create .tm
+   - shells out to htsim_cbr
+   - calls parse_results.py
+   - prints per-pair summary: demand vs effective flow
+
+4. exp2: run.py
+   - imports config from config.py (d_st, W, r, topo)
+   - same as exp1 but T_st = infinity (all traffic via W1 = W, W2 unused)
+   - additionally runs predict_loss.py which:
+     a. reads topo JSON for edge capacities
+     b. reads paths from htsim -list_kshort output (gives edge lists)
+     c. sums per-edge load from all tunnels
+     d. computes U_e and (U-1)/U drop fraction
+     e. computes predicted per-tunnel surviving flow
+   - compares predicted vs actual
+
+WHAT TO BUILD (IN ORDER)
+------------------------
+Step 1: Reorganize — move generate_tm.py to common/, simplify it
+Step 2: Build parse_results.py — test with existing stress test output
+Step 3: Build exp1/config.py + exp1/run.py — test end-to-end on geant_small
+Step 4: Build exp2/config.py + exp2/run.py — test end-to-end
+Step 5: Build exp2/predict_loss.py — test math model against htsim results
+
+SIMPLIFICATION: generate_tm.py
+-------------------------------
+Current version has argparse, CLI mode, JSON config mode.
+Simplify to: one function that takes a list of pair dicts → returns .tm content.
+Both run.py scripts call this function directly (no subprocess).
+
+For exp2 (uniform loss, no threshold):
+  Just set T_st = very large number (1e9) so everything goes through W1.
+  W1 = W, W2 = anything (won't matter since overflow = 0)
+
+NODE INDEXING
+-------------
+- geant.txt: 1-indexed (1-22)
+- geant.json: r1-r22 (htsim host names)
+- htsim internal: 0-indexed (0-21)
+- TM files: 0-indexed (0->21)
+- Directed JSON the user has: 0-indexed (0-21)
+Everything in our scripts uses 0-indexed to match htsim and the directed JSON.
+
+SANITY CHECKS
+-------------
+After step 2: run parse_results on the stress test we already did (5 flows, 
+  path 0 has loss, path 1 doesn't) — verify CSV shows this correctly.
+After step 3: exp1 on geant_small with one overloaded pair — check effective flow.
+After step 4: exp2 on geant_small — check per-tunnel flows.
+After step 5: compare predict_loss output vs htsim — should roughly match.

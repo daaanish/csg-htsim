@@ -1,8 +1,0 @@
-# Minimal traffic matrix: 1 flow from node 0 to node 1
-Nodes 2
-Connections 1
-Triggers 0
-Failures 0
-
-# size is in bytes; 100 Mb = 12.5 MB = 12,500,000 bytes
-0->1 start 0 size 12500000
