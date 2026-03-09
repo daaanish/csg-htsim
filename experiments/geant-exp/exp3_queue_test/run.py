@@ -32,7 +32,6 @@ TM_DIR    = os.path.dirname(__file__)
 
 # ── CONFIG ─────────────────────────────────────────────────────────────────
 NODES          = 22
-FLOW_SIZE      = 1_250_000    # bytes per flow
 SIM_END        = 2.0
 BOTTLENECK_CAP = 24           # r1->r16 link capacity in geant_small (Mbps)
 
@@ -83,16 +82,22 @@ sys.path.insert(0, os.path.join(ROOT, "experiments/geant-exp/common"))
 from parse_results import parse_htsim_output
 
 
-def write_simple_tm(filename, num_flows, rate):
+def flow_size_for_rate(rate_mbps):
+    """Return flow size large enough to keep a flow active for SIM_END."""
+    return int(rate_mbps * SIM_END * 1e6 / 8) + 1_500
+
+
+def write_simple_tm(filename, num_flows, rate, flow_size_bytes):
     """Write a TM file with N flows from r1 (0) to r16 (15), single-hop."""
     lines = [
         f"# Scenario: {num_flows} flows @ {rate} Mbps each = {num_flows*rate} Mbps",
+        f"# Flow size: {flow_size_bytes} bytes for {SIM_END}s duration",
         f"Nodes {NODES}",
         f"Connections {num_flows}",
     ]
     for i in range(1, num_flows + 1):
         # r1=0, r16=15; path 0 is direct r1->r16
-        lines.append(f"0->15 id {i} start 0 size {FLOW_SIZE} rate {rate} paths_idx 0")
+        lines.append(f"0->15 id {i} start 0 size {flow_size_bytes} rate {rate} paths_idx 0")
     with open(filename, "w") as f:
         f.write("\n".join(lines) + "\n")
     return filename
@@ -100,13 +105,13 @@ def write_simple_tm(filename, num_flows, rate):
 
 def run_scenario(scenario):
     """Run one scenario and return (total_sent, total_delivered, loss%)."""
-    name = scenario["name"]
     rate = scenario["rate"]
     n = scenario["num_flows"]
     q = scenario["queue_pkts"]
+    flow_size_bytes = flow_size_for_rate(rate)
 
     tm_file = os.path.join(TM_DIR, f"scenario.tm")
-    write_simple_tm(tm_file, n, rate)
+    write_simple_tm(tm_file, n, rate, flow_size_bytes)
 
     cmd = [HTSIM, "-json_topo", TOPO, "-tm", tm_file,
            "-q", str(q), "-queue_type", "random",

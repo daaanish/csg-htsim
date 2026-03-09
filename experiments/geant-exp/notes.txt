@@ -1,0 +1,68 @@
+Exp 1:
+Simulator could take a single traffic demand matrix
+it will also take values d_st (demand bw s and t), w1_stk (set of split ratios per tunnel), w2_stk (other set of split ratios),T_st (threshold after which w2 is used instead of w1)
+Sum_w1 = 1, Sum_w2=1, capacity constraint not met.
+Packet drops probably happen at the router, need to see the effective flow at the receiver.
+On each st 
+if d_st < T_st then send w1_stk * d_st 
+                      else send w1_stk * T_st + w2_stk * (d_st-T_st)
+Measure the received traffic for every pair. This can later be used to compare with SYS’s result for MaxEffFlow with simple simulator.
+
+
+Exp 2: Validate the simple simulator against packet level simulator (HTSIM)
+d_st, w_stk , Sum_w = 1, capacity constraint not met.
+Send one matrix; get the effective flow on each tunnel of each pair using packet simulator and simplified model and compare.
+Each st pair sees a loss l_st
+If an edge with utilization 1.5, it will drop 0.5/1.5 of traffic going on it
+Uniform assumption: We assume that all the tunnels traversing the edge will each see 0.5/1.5 of their traffic dropped.
+D_st -> 2 paths: (0.6, 0.4). 0.4 goes on link with loss. ⅓ of this 0.4 gets lost.
+We want to see if this happens in htsim or just in the simple simulator we imagine
+
+ISSUES AND STUFF:
+
+1. `random` is not pure tail-drop
+- I describe `random` in htsim as tail-drop.
+- But randomqueue.cpp shows a 10% stochastic drop region before hard overflow.
+- So any comparison to a clean capacity-based/simple loss model is only approximate, not exact.
+
+==> I think this is fine, very small impact and kind of necessary for htsim, exact fifo did not work well probably due to internal scheduling or something
+
+2. Exp 1 calls total delivered bytes “MaxEffFlow”
+- run.py prints total delivered bytes as “MaxEffFlow”.
+- But that number is bytes over an arbitrary 2-second window, not a normalized rate/objective.
+- Since `flow_size` is chosen from `max_rate × SIM_END` at run.py, the result depends on simulation duration.
+- If SYS reports Mbps or some solver objective, this is not a direct apples-to-apples comparison yet.
+
+===> Not sure what the actual thing shoudl be, how would i report max effective flow as Mbps? what do u mean
+
+3. Exp 1 silently drops tiny tunnel allocations
+- load_sys_data.py filters out any tunnel with `volume_mbps <= 0.01`.
+- That is probably practical, but it means some positive-demand pairs never reach HTSIM.
+- So totals and pair counts can differ slightly from the raw SYS/TM data.
+
+===> maybe not an issue
+
+4. Exp 2 only partially implements the note’s validation
+- The note says: compare effective flow on each tunnel between simple model and HTSIM.
+- The current implementation in predict_loss.py compares loss fractions, not a full simple-simulator effective-flow pipeline.
+
+===> NEED TO ADD CODE TO CALCULATE AND SHOW EFF FLOW PER TUNNEL AND PER PAIR AS OUTPUT LIKE DONE IN EXP1 (SUCCESSFULLY DELIVERED PACKETS)
+
+
+5. Exp 2 flow decomposition is rounded
+- generate_tm.py uses `round(volume / rate_mbps)` to choose an integer number of flows.
+- The default exp2 case happens to be exact, but many other `d_st` / split ratios will not be.
+- So future exp2 cases can drift from the requested `W` values.
+
+===> Exp 2 was done before exp1 and flow-wise sending rate specification logic was done for exp1, can use that here as well!
+
+6. Exp 2 and Exp 3 are not actually sending for the full 2 seconds
+====> see fix for number 5, need to rewrite with per-flow rate logic
+
+7. `demand` / `admitted` metadata handling is inconsistent
+- generate_tm.py writes `demand` and `admitted` only on the first flow of each pair, and computes them from `total_flows * flow_size_bytes`.
+- That is not the real pair demand from the note.
+- Also, the docs imply `admitted` should override `size`, but the actual simulator code at main_cbr.cpp uses `size` first and `admitted` only as fallback.
+- That internal inconsistency can cause confusion later, even if these specific runs mostly rely on `size`.
+
+====> needs detailed fixing later

@@ -1,0 +1,9 @@
+split_ratios_1_* -> w1
+split_ratios_2_* -> w2
+T_st -> threshold
+
+need to load them using torch.load. Each set of split ratios and thresholds is for five traffic matrices (starting from 7500 till 10772). 
+7500 till 10772 are in geant-tms (test set)
+they are also in the geant-exp/geant-tms/geant-harp-format in a different format Traffic matrices: Numpy array of shape (num_pairs, 1)
+
+conda activate htsim before running experiments

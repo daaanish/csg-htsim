@@ -623,7 +623,7 @@ static FlowInfo create_flow(
     // For explicit path indices on JSON topology, fetch K-shortest.
     JsonTopology* jt = dynamic_cast<JsonTopology*>(topo_base);
     if (jt && !crt->path_indices.empty())
-        sel_paths = jt->get_k_shortest_paths(src, dest, 8);
+        sel_paths = jt->get_k_shortest_paths(src, dest, 4);
 
     if (!sel_paths || sel_paths->empty()) {
         cout << "Warning: No path from " << src << " to " << dest << endl;

@@ -1,0 +1,322 @@
+[
+  {
+    "file": "main_tcp.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "main_tcp.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "firstfit.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "firstfit.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "vl2_topology.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "vl2_topology.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "fat_tree_topology.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "fat_tree_topology.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "fat_tree_switch.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "fat_tree_switch.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "dragon_fly_topology.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "dragon_fly_topology.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "bcube_topology.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "bcube_topology.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "connection_matrix.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "connection_matrix.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "oversubscribed_fat_tree_topology.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "oversubscribed_fat_tree_topology.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "shortflows.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "shortflows.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "multihomed_fat_tree_topology.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "multihomed_fat_tree_topology.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "star_topology.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "star_topology.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "main_ndp.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "main_ndp.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "main_roce.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "main_roce.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "main_swift.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "main_swift.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "generic_topology.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "generic_topology.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "main_hpcc.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "main_hpcc.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "main_eqds.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "main_eqds.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "main_cbr.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "main_cbr.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  },
+  {
+    "file": "json_topology.cpp",
+    "arguments": [
+      "g++",
+      "-I//Users/dathar/Purdue/Research/csg-htsim/sim/datacenter/..",
+      "-I/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter",
+      "-Wall",
+      "-std=c++11",
+      "-g",
+      "-Wsign-compare",
+      "-O2",
+      "-c",
+      "json_topology.cpp"
+    ],
+    "directory": "/Users/dathar/Purdue/Research/csg-htsim/sim/datacenter"
+  }
+]
