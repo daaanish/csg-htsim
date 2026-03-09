@@ -1,5 +1,5 @@
 """
-Experiment 1: Threshold Routing -> MaxEffFlow comp vs SYS
+Experiment 1: Threshold Routing -> MaxEffFlow in htsim vs SYS-sim
 ======================================================
 Loads SYS output (W1, W2, T_st) and GEANT TM demands,
 generates htsim traffic, and measures per-pair effective flow.
@@ -15,6 +15,8 @@ Usage:
 """
 
 import subprocess, sys, os, argparse, re, csv
+import builtins
+from datetime import datetime
 
 # ── PATHS ──────────────────────────────────────────────────────────────────
 ROOT      = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
@@ -53,9 +55,23 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
     tm_out = os.path.join(out_dir, "traffic.tm")
 
+    # Open log file — mirror all print output to both terminal and log
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_path = os.path.join(out_dir, f"run_{timestamp}.txt")
+    log_file = open(log_path, "w")
+
+    # Local print wrapper for this function scope only.
+    # Keeps terminal output unchanged and duplicates it to log_file.
+    def print(*args, **kwargs):
+        builtins.print(*args, **kwargs)
+        log_kwargs = dict(kwargs)
+        log_kwargs["file"] = log_file
+        builtins.print(*args, **log_kwargs)
+        log_file.flush()
+
     # ── Header ─────────────────────────────────────────────────────────────
     print("=" * 70)
-    print("  Experiment 1: W1, W2, T_st (Threshold) Routing (comp vs SYS)")
+    print("  Experiment 1: W1, W2, T_st (Threshold) Routing (htsim vs SYS-sm)")
     print("=" * 70)
     print(f"  Topology:     {os.path.basename(TOPO)}")
     print(f"  sys_data idx: {sys_idx}")
@@ -74,10 +90,10 @@ def main():
 
     entries, summary = compute_volumes(w1, w2, t_st, demand)
 
-    # Compute flow_size large enough for all flows to run the full sim.
+    # Compute flow_size large enough for all flows to run through the full sim.
     # Need: flow_size_bytes >= rate_mbps * sim_end_sec * 1e6 / 8
     max_rate = max(e["volume_mbps"] for e in entries) if entries else 1.0
-    flow_size = int(max_rate * SIM_END * 1e6 / 8) + 1_000_000  # generous margin
+    flow_size = int(max_rate * SIM_END * 1e6 / 8) + 1_000_000  # added margin
     print(f"  Flow size:    {flow_size:,} bytes "
           f"(auto-computed from max rate {max_rate:.1f} Mbps × {SIM_END}s)")
 
@@ -133,6 +149,12 @@ def main():
     for i, fe in enumerate(flow_entries):
         rate_lookup[i + 1] = fe["volume_mbps"]
 
+    # Build demand lookup: {(src, dst): demand_mbps}
+    demand_lookup = {}
+    for i in range(N_PAIRS):
+        src, dst = pair_index_to_src_dst(i)
+        demand_lookup[(src, dst)] = demand_mbps[i]
+
     # Load precomputed path hops
     path_hops = load_path_hops()
 
@@ -141,7 +163,7 @@ def main():
     with open(flow_csv, "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["flow_id", "src", "dst", "path_idx", "path_hops",
-                     "rate_mbps", "sent_bytes", "delivered_bytes",
+                     "demand_mbps", "rate_mbps", "sent_bytes", "delivered_bytes",
                      "loss_bytes", "loss_pct"])
         for r in results:
             fid = r.get("flow_id", 0)
@@ -150,8 +172,9 @@ def main():
             loss_pct = loss / r["sent"] * 100 if r["sent"] > 0 else 0
             hops = path_hops.get((r["src"], r["dst"], pidx), "")
             rate = rate_lookup.get(fid, 0)
+            pair_demand = demand_lookup.get((r["src"], r["dst"]), 0)
             w.writerow([fid, r["src"], r["dst"], pidx, hops,
-                        f"{rate:.4f}", r["sent"], r["delivered"],
+                        f"{pair_demand:.4f}", f"{rate:.4f}", r["sent"], r["delivered"],
                         loss, f"{loss_pct:.2f}"])
     print(f"  Wrote {flow_csv}")
 
@@ -161,13 +184,14 @@ def main():
     with open(tunnel_csv, "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["src", "dst", "path_idx", "path_hops",
-                     "sent_bytes", "delivered_bytes", "loss_bytes", "loss_pct"])
+                     "demand_mbps", "sent_bytes", "delivered_bytes", "loss_bytes", "loss_pct"])
         for t in tunnels:
             loss = t["total_sent"] - t["total_delivered"]
             loss_pct = loss / t["total_sent"] * 100 if t["total_sent"] > 0 else 0
             hops = path_hops.get((t["src"], t["dst"], t["path_idx"]), "")
+            pair_demand = demand_lookup.get((t["src"], t["dst"]), 0)
             w.writerow([t["src"], t["dst"], t["path_idx"], hops,
-                        t["total_sent"], t["total_delivered"],
+                        f"{pair_demand:.4f}", t["total_sent"], t["total_delivered"],
                         loss, f"{loss_pct:.2f}"])
     print(f"  Wrote {tunnel_csv}")
 
@@ -184,12 +208,13 @@ def main():
     pair_csv = os.path.join(out_dir, "results_per_pair.csv")
     with open(pair_csv, "w", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["src", "dst", "sent_bytes", "delivered_bytes",
+        w.writerow(["src", "dst", "demand_mbps", "sent_bytes", "delivered_bytes",
                      "loss_bytes", "loss_pct"])
         for (src, dst), t in sorted(pair_totals.items()):
             loss = t["sent"] - t["delivered"]
             loss_pct = loss / t["sent"] * 100 if t["sent"] > 0 else 0
-            w.writerow([src, dst, t["sent"], t["delivered"],
+            pair_demand = demand_lookup.get((src, dst), 0)
+            w.writerow([src, dst, f"{pair_demand:.4f}", t["sent"], t["delivered"],
                         loss, f"{loss_pct:.2f}"])
     print(f"  Wrote {pair_csv}")
     print()
@@ -199,15 +224,22 @@ def main():
     total_delivered = sum(v["delivered"] for v in pair_totals.values())
     total_loss = total_sent - total_delivered
 
+    # MaxEffFlow = total delivered rate (bytes→bits, divided by sim time)
+    eff_flow_mbps = total_delivered * 8 / (SIM_END * 1e6)
+    eff_flow_gbps = eff_flow_mbps / 1000.0
+    sent_rate_mbps = total_sent * 8 / (SIM_END * 1e6)
+
     print("=" * 70)
     print("  KEY RESULTS")
     print("=" * 70)
-    print(f"  Total Sent:      {total_sent:>15,} bytes")
-    print(f"  Total Delivered: {total_delivered:>15,} bytes  <--- MaxEffFlow")
+    print(f"  Total Sent:      {total_sent:>15,} bytes  ({sent_rate_mbps:,.1f} Mbps)")
+    print(f"  Total Delivered: {total_delivered:>15,} bytes  ({eff_flow_mbps:,.1f} Mbps)")
     print(f"  Total Loss:      {total_loss:>15,} bytes")
     if total_sent > 0:
         print(f"  Delivery Ratio:  {total_delivered/total_sent*100:>14.2f}%")
         print(f"  Loss Ratio:      {total_loss/total_sent*100:>14.2f}%")
+    print()
+    print(f"  >>> MaxEffFlow = {eff_flow_mbps:,.2f} Mbps  ({eff_flow_gbps:,.4f} Gbps)")
     print()
 
     # ── Step 5: Per-pair breakdown (pairs with loss) ───────────────────────
@@ -227,6 +259,8 @@ def main():
     else:
         print("  No pairs experienced loss ???")
     print()
+    print(f"  Log file:      {log_path}")
+    log_file.close()
 
 
 if __name__ == "__main__":

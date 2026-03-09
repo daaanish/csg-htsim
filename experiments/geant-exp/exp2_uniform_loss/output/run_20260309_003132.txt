@@ -1,0 +1,19 @@
+======================================================================
+  Experiment 2: Uniform Loss Model
+======================================================================
+  Topology:   geant_small.json
+  Sim end:    2.0s
+  Queue size: 15 packets (random)
+
+  Generated /Users/dathar/Purdue/Research/csg-htsim/experiments/geant-exp/exp2_uniform_loss/output/traffic.tm
+  Flow size:   7,501,500 bytes
+  Total flows: 2
+    0->21: d_st=50.0 active_paths=2 paths=[0, 1]
+
+  Running: htsim_cbr -json_topo geant_small.json -tm traffic.tm -q 15 -queue_type random -end 2.0
+  htsim finished.
+  Wrote /Users/dathar/Purdue/Research/csg-htsim/experiments/geant-exp/exp2_uniform_loss/output/results_per_flow.csv
+  Wrote /Users/dathar/Purdue/Research/csg-htsim/experiments/geant-exp/exp2_uniform_loss/output/results_per_tunnel.csv
+  Wrote /Users/dathar/Purdue/Research/csg-htsim/experiments/geant-exp/exp2_uniform_loss/output/results_per_pair.csv
+
+  Log file:   /Users/dathar/Purdue/Research/csg-htsim/experiments/geant-exp/exp2_uniform_loss/output/run_20260309_003132.txt

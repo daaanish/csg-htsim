@@ -165,8 +165,8 @@ def write_tm_file(outfile, entries, flow_size_bytes, summary=None):
     computed volume rate in Mbps. This eliminates rounding error
     from discretizing into fixed-rate flows.
     """
-    # Filter out near-zero volumes
-    active = [e for e in entries if e["volume_mbps"] > 0.01]
+    # Keep all strictly positive volumes to avoid silently dropping tiny-rate tunnels
+    active = [e for e in entries if e["volume_mbps"] > 0.0]
     total_flows = len(active)
 
     lines = []
@@ -188,7 +188,7 @@ def write_tm_file(outfile, entries, flow_size_bytes, summary=None):
         rate = e["volume_mbps"]
         lines.append(
             f"{e['src']}->{e['dst']} id {flow_id} start 0 "
-            f"size {flow_size_bytes} rate {rate:.4f} "
+            f"size {flow_size_bytes} rate {rate:.8f} "
             f"paths_idx {e['path_idx']}"
         )
 

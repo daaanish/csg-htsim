@@ -13,6 +13,8 @@ import csv
 import os
 import subprocess
 import sys
+import builtins
+from datetime import datetime
 
 # ── PATHS ──────────────────────────────────────────────────────────────────
 ROOT      = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
@@ -111,6 +113,20 @@ def aggregate_by_pair(results):
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
 
+    # Open log file — mirror all print output to both terminal and log
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_path = os.path.join(OUT_DIR, f"run_{timestamp}.txt")
+    log_file = open(log_path, "w")
+
+    # Local print wrapper for this function scope only.
+    # Keeps terminal output unchanged and duplicates it to log_file.
+    def print(*args, **kwargs):
+        builtins.print(*args, **kwargs)
+        log_kwargs = dict(kwargs)
+        log_kwargs["file"] = log_file
+        builtins.print(*args, **log_kwargs)
+        log_file.flush()
+
     print("=" * 70)
     print("  Experiment 2: Uniform Loss Model")
     print("=" * 70)
@@ -142,6 +158,8 @@ def main():
     if result.returncode != 0:
         print(f"  ERROR: htsim exited with code {result.returncode}")
         print(output[-2000:])
+        print(f"  Log file:   {log_path}")
+        log_file.close()
         return
     print(f"  htsim finished.")
 
@@ -227,6 +245,8 @@ def main():
     print_comparison(predictions, tunnels, SIM_END)
     print_pair_comparison(pair_predictions, pair_totals, SIM_END)
     print()
+    print(f"  Log file:   {log_path}")
+    log_file.close()
 
 
 if __name__ == "__main__":
