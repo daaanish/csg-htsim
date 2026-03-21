@@ -29,7 +29,7 @@ import torch
 N_NODES = 22
 N_PAIRS = N_NODES * (N_NODES - 1)   # 462
 K_PATHS = 4
-FIRST_EVAL_TM = 7505   # first eval TM number
+FIRST_EVAL_TM = 7506   # first eval TM number
 TMS_PER_INDEX = 5       # 5 eval TMs per sys_data index
 
 # Default paths (relative to geant-exp/)
@@ -161,12 +161,12 @@ def compute_volumes(w1, w2, t_st, demand_gbps):
 def write_tm_file(outfile, entries, flow_size_bytes, summary=None):
     """Write htsim-compatible .tm file from volume entries.
 
-    Uses exact-rate mode: 1 CBR flow per (pair, path) entry at the
-    computed volume rate in Mbps. This eliminates rounding error
-    from discretizing into fixed-rate flows.
+    Not filtering out tiny volumes can cause HTSIM to
+    interpret it as 0 size (infinite sending until end of sim time)
+    So we apply a small threshold (0.01 Mbps) to filter out near-zero flows.
     """
-    # Keep all strictly positive volumes to avoid silently dropping tiny-rate tunnels
-    active = [e for e in entries if e["volume_mbps"] > 0.0]
+    # Filter out near-zero volumes
+    active = [e for e in entries if e["volume_mbps"] > 0.01]
     total_flows = len(active)
 
     lines = []
@@ -188,7 +188,7 @@ def write_tm_file(outfile, entries, flow_size_bytes, summary=None):
         rate = e["volume_mbps"]
         lines.append(
             f"{e['src']}->{e['dst']} id {flow_id} start 0 "
-            f"size {flow_size_bytes} rate {rate:.8f} "
+            f"size {flow_size_bytes} rate {rate:.4f} "
             f"paths_idx {e['path_idx']}"
         )
 
